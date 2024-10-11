@@ -12,6 +12,8 @@ import { sendWhatsAppMessages } from "./api/whatsapp";
 export default function Home() {
   const [excelFile, setExcelFile] = useState<File | null>(null);
   const [images, setImages] = useState<FileList | null>(null);
+  const [startRow, setStartRow] = useState<number>(0);
+  const [endRow, setEndRow] = useState<number>(1000);
   const [message, setMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -27,6 +29,9 @@ export default function Home() {
     const formData = new FormData();
     formData.append("excel", excelFile);
     formData.append("message", message);
+    formData.append("startRow", startRow.toString());
+    formData.append("endRow", endRow.toString());
+
     if (images) {
       for (let i = 0; i < images.length; i++) {
         formData.append("images", images[i]);
@@ -69,6 +74,26 @@ export default function Home() {
               accept="image/*"
               multiple
               onChange={(e) => setImages(e.target.files)}
+            />
+          </div>
+          <div>
+            <Label htmlFor="startRow">Start Row</Label>
+            <Input
+              id="startRow"
+              type="number"
+              value={startRow}
+              onChange={(e) => setStartRow(Number(e.target.value))}
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="endRow">End Row</Label>
+            <Input
+              id="endRow"
+              type="number"
+              value={endRow}
+              onChange={(e) => setEndRow(Number(e.target.value))}
+              required
             />
           </div>
           <div>
